@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Requests\Post;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class PostUpdateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|min:2|unique:posts,name,' . $this->post->id,
+            'detail' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'upload' => 'nullable|image|max:2048', // Ensuring upload is an image and within 2MB
+        ];
+    }
+}
