@@ -40,13 +40,18 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
-
         $post = Post::create($validated);
+    
+        if ($request->hasFile('thumbnail')) {
+            $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnails');
+    
+            // Optional: You can update old 'thumbnail' column with a backup path
+            // $post->thumbnail = $post->getFirstMediaUrl('thumbnails');
+            // $post->save();
+        }
+    
         $post->tags()->attach($request->tags ?? []);
-
+    
         return redirect()->route('posts.index')->with('success', 'Post Created Successfully');
     }
 
@@ -76,15 +81,19 @@ class PostController extends Controller
     public function update(PostUpdateRequest $request, Post $post)
     {
         $validated = $request->validated();
-
-        if ($request->hasFile('thumbnail')) {
-            if ($post->thumbnail) {
-                Storage::disk('public')->delete($post->thumbnail);
-            }
-            $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
-
         $post->update($validated);
+
+        if ($request->hasFile('thumbnail')){
+            $post->clearMediaCollection('thumbnails'); //ensures updating new thumbnail will remove old one
+            $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnails'); // automatically handles file storage
+
+            // $post->thumbnail = $post->getFirstMediaUrl('thumbnails');
+            // $post->save();
+        }
+        if ($request->has('remove_thumbnail')) {
+            $post->clearMediaCollection('thumbnails');
+        }
+       
         $post->tags()->sync($request->tags ?? []);
 
         return redirect()->route('posts.index')->with('success', 'Post Updated Successfully');
@@ -92,24 +101,23 @@ class PostController extends Controller
 
     public function trashed()
     {
-        $posts = Post::onlyTrashed()->with(['category', 'tags'])->paginate(10);
+        $posts = Post::onlyTrashed()->with(['category', 'tags', 'media'])->paginate(10);
         return view('dashboard.posts.trash', compact('posts'));
     }
 
+
     public function restore($id)
     {
-       $post = Post::withTrashed()->findOrFail($id);
-       $post->restore();
-
-       return redirect()->route('posts.trashed')->with('success', 'Post restored successfully.');
+        $post = Post::withTrashed()->with('media')->findOrFail($id);
+        $post->restore();
+        return redirect()->route('posts.trashed')->with('success', 'Post restored successfully.');
     }
 
     public function forceDelete($id)
     {
-       $post = Post::withTrashed()->findOrFail($id);
-       $post->forceDelete();
-
-       return redirect()->route('posts.trashed')->with('success', 'Post permanently deleted.');
+        $post = Post::withTrashed()->with('media')->findOrFail($id);
+        $post->forceDelete(); // This will automatically delete associated media
+        return redirect()->route('posts.trashed')->with('success', 'Post permanently deleted.');
     }
 
     /**

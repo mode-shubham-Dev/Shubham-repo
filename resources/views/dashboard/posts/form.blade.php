@@ -6,7 +6,8 @@
             <option value="">Select Category</option>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}" 
-                    {{ (isset($post) && $post->category_id == $category->id) ? 'selected' : (old('category_id') == $category->id ? 'selected' : '') }}>
+                    {{ (isset($post) && $post->category_id == $category->id) ? 'selected' : (old('category_id') == $category->id ? 'selected' : '') }}> 
+                    {{-- editing an existing category , it autoselect the right one --}}
                     {{ $category->title }}
                 </option>
             @endforeach
@@ -46,22 +47,31 @@
             @enderror
         </div>
 
-        <!-- Thumbnail Upload -->
-        <div class="mb-3">
-            <label for="thumbnail" class="form-label"><strong>Thumbnail:</strong></label>
-            <input type="file" class="form-control" name="thumbnail" id="thumbnail">
-            @error('thumbnail')
-                <p class="text-danger">{{ $message }}</p>
-            @enderror
-
-            @if (isset($post) && $post->thumbnail)
-                <div class="mt-2">
-                    <img src="{{ asset('storage/' . $post->thumbnail) }}" 
-                         alt="Thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
-                    <p>Current Thumbnail</p>
+     <!-- Thumbnail Upload -->
+     <div class="mb-3">
+        <label for="thumbnail" class="form-label"><strong>Thumbnail:</strong></label>
+        <input type="file" class="form-control" name="thumbnail" id="thumbnail" accept="image/*">
+        @error('thumbnail')
+            <p class="text-danger">{{ $message }}</p>
+        @enderror
+    
+        @if(isset($post) && $post->hasMedia('thumbnails'))
+            <div class="mt-3">
+                <img src="{{ $post->getFirstMediaUrl('thumbnails', 'preview') }}" 
+                     alt="Current thumbnail" class="img-thumbnail mb-2" 
+                     style="max-width: 200px; max-height: 200px;">
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" 
+                           name="remove_thumbnail" id="remove_thumbnail">
+                    <label class="form-check-label text-danger" for="remove_thumbnail">
+                        Remove current thumbnail
+                    </label>
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
+    </div>
+
 
         <!-- Product Details -->
 <div class="mb-3">

@@ -27,7 +27,7 @@ class PostStoreRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
-            'upload' => 'nullable|image|max:2048', // Ensuring upload is an image and within 2MB
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ensuring upload is an image and within 2MB
         ];
     }
 }

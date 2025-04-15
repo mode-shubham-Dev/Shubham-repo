@@ -1,27 +1,16 @@
-<!-- filepath: c:\Users\Asus\Herd\last-one\resources\views\dashboard\layouts\sidebar.blade.php -->
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-  <!--begin::Sidebar Brand-->
+  <!-- Sidebar Brand -->
   <div class="sidebar-brand">
-    <!--begin::Brand Link-->
     <a href="#" class="brand-link">
-      <!--begin::Brand Image-->
-      <img
-        src="{{ asset('dashboard/assets/img/AdminLTELogo.png') }}"
-        alt="AdminLTE Logo"
-        class="brand-image opacity-75 shadow"
-      />
-      <!--end::Brand Image-->
-      <!--begin::Brand Text-->
+      <img src="{{ asset('dashboard/assets/img/AdminLTELogo.png') }}" 
+           alt="AdminLTE Logo" class="brand-image opacity-75 shadow">
       <span class="brand-text fw-light">Kumo-Labs</span>
-      <!--end::Brand Text-->
     </a>
-    <!--end::Brand Link-->
   </div>
-  <!--end::Sidebar Brand-->
-  <!--begin::Sidebar Wrapper-->
+  
+  <!-- Sidebar Wrapper -->
   <div class="sidebar-wrapper">
     <nav class="mt-2">
-      <!--begin::Sidebar Menu-->
       <ul class="nav sidebar-menu flex-column" role="menu" data-accordion="false">
         <!-- Dashboard -->
         <li class="nav-item">
@@ -30,6 +19,7 @@
             <p>Dashboard</p>
           </a>
         </li>
+        
         <!-- Blogs -->
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
@@ -60,9 +50,15 @@
             </li>
           </ul>
         </li>
+        
+        <!-- Media Manager -->
+        <li class="nav-item">
+          <a href="{{ route('media.index') }}" class="nav-link">
+            <i class="nav-icon bi bi-images"></i>
+            <p>Media Manager</p>
+          </a>
+        </li>
       </ul>
-      <!--end::Sidebar Menu-->
     </nav>
   </div>
-  <!--end::Sidebar Wrapper-->
 </aside>
