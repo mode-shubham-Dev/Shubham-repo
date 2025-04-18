@@ -45,7 +45,7 @@
                                 <span class="text-muted">No tags</span>
                             @endforelse
                         </td>
-                        <td>{{ Str::limit($post->detail, 50) }}</td>
+                        <td><span>{!! $post->detail!!}</span></td>
                         <td>
                             @if($post->hasMedia('thumbnails'))
                                 <img src="{{ $post->getFirstMediaUrl('thumbnails', 'thumb') }}" 

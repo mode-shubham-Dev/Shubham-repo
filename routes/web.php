@@ -13,29 +13,25 @@ Route::get('/', function () {
 
 Route::get('/dashboard/home', function () {
     return view('dashboard.master');
-})->middleware(['auth', 'verified'])->name('dashboard.home');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/dashboard/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/dashboard/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Category Routes
-Route::resource('categories', CategoryController::class);
+Route::resource('/dashboard/categories', CategoryController::class);
 
-// Post Routes
-Route::get('/posts/trashed', [PostController::class, 'trashed'])->name('posts.trashed');
-Route::post('/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
-Route::delete('/posts/{id}/force-delete', action: [PostController::class, 'forceDelete'])->name('posts.forceDelete');
-Route::resource('posts', PostController::class);
+Route::get('/dashboard/posts/trashed', [PostController::class, 'trashed'])->name('posts.trashed');
+Route::post('/dashboard/posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+Route::delete('/dashboard/posts/{id}/force-delete', [PostController::class, 'forceDelete'])->name('posts.forceDelete');
+Route::resource('/dashboard/posts', PostController::class);
 
-// Tag Routes
-Route::resource('tags', TagController::class);
+Route::resource('/dashboard/tags', TagController::class);
 
-// Media Manager Routes
-Route::get('media', [MediaController::class, 'index'])->name('media.index');
-Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
-Route::get('media/{media}/download', [MediaController::class, 'download'])->name('media.download');
+Route::get('/dashboard/media', [MediaController::class, 'index'])->name('media.index');
+Route::delete('/dashboard/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+Route::get('/dashboard/media/{media}/download', [MediaController::class, 'download'])->name('media.download');
 
 require __DIR__.'/auth.php';

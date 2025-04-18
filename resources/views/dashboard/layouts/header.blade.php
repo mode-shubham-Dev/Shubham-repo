@@ -65,8 +65,14 @@
           <!--end::Menu Body-->
           <!--begin::Menu Footer-->
           <li class="user-footer">
-            <a href="#" class="btn btn-default btn-flat">Profile</a>
-            <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+
+            <a href="{{ route('profile.edit') }}" class="btn btn-default btn-flat">Profile</a>
+
+            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+              @csrf
+              <button type="submit" class="btn btn-default btn-flat float-end">Sing Out</button>
+            </form>
+
           </li>
           <!--end::Menu Footer-->
         </ul>

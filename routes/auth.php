@@ -33,6 +33,13 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    Route::post('/logout', function(){
+        auth()->logout(); // logsout the currently authenticated user 
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/login')->with('status', 'Logged out successfully');
+    })->name('logout');
 });
 
 Route::middleware('auth')->group(function () {

@@ -31,19 +31,19 @@
           </a>
           <ul class="nav nav-treeview" style="display: none;">
             <li class="nav-item">
-              <a href="/categories" class="nav-link">
+              <a href="{{ route('categories.index') }}" class="nav-link">
                 <i class="nav-icon bi bi-tags"></i>
                 <p>Categories</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="/tags" class="nav-link">
+              <a href="{{ route('tags.index') }}" class="nav-link">
                 <i class="nav-icon bi bi-tag"></i>
                 <p>Tags</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="/posts" class="nav-link">
+              <a href="{{ route('posts.index') }}" class="nav-link">
                 <i class="nav-icon bi bi-file-earmark-text"></i>
                 <p>Posts</p>
               </a>

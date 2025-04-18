@@ -44,7 +44,7 @@ All Categories
         <div class="col-xs-12 col-sm-12 col-md-12 mt-2">
             <div class="form-group">
                 <strong>Details:</strong> <br/>
-                {{ $post->detail }}
+                {!! $post->detail!!}
             </div>
         </div>
     </div>
