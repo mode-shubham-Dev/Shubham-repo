@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:post-list|post-create|post-edit|post-delete'], ['index' => 'show']);
+        $this->middleware(['permission:post-create'], ['only' => 'create', 'store']);
+        $this->middleware(['permission:post-edit'], ['only' => 'edit', 'update']);
+        $this->middleware(['permission:post-delete'], ['only' => 'destroy']);
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -41,17 +49,14 @@ class PostController extends Controller
         $validated = $request->validated();
 
         $post = Post::create($validated);
-    
+
         if ($request->hasFile('thumbnail')) {
             $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnails');
-    
-            // Optional: You can update old 'thumbnail' column with a backup path
-            // $post->thumbnail = $post->getFirstMediaUrl('thumbnails');
-            // $post->save();
+
         }
-    
+
         $post->tags()->attach($request->tags ?? []);
-    
+
         return redirect()->route('posts.index')->with('success', 'Post Created Successfully');
     }
 
@@ -60,7 +65,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->load('category', 'tags'); 
+        $post->load('category', 'tags');
         return view('dashboard.posts.show', compact('post'));
     }
 
@@ -71,7 +76,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        
+
         return view('dashboard.posts.edit', compact('post', 'categories', 'tags'));
     }
 
@@ -83,17 +88,16 @@ class PostController extends Controller
         $validated = $request->validated();
         $post->update($validated);
 
-        if ($request->hasFile('thumbnail')){
+        if ($request->hasFile('thumbnail')) {
             $post->clearMediaCollection('thumbnails'); //ensures updating new thumbnail will remove old one
             $post->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnails'); // automatically handles file storage
 
-            // $post->thumbnail = $post->getFirstMediaUrl('thumbnails');
-            // $post->save();
+          
         }
         if ($request->has('remove_thumbnail')) {
             $post->clearMediaCollection('thumbnails');
         }
-       
+
         $post->tags()->sync($request->tags ?? []);
 
         return redirect()->route('posts.index')->with('success', 'Post Updated Successfully');

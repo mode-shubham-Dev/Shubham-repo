@@ -31,4 +31,7 @@ All Categories
   
   </div>
 </div>
+
+
+
 @endsection

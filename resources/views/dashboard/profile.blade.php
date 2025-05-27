@@ -12,7 +12,7 @@
                     <!-- Success Message -->
                     @if (session('status') === 'profile-updated')
                         <div class="alert alert-success">
-                            Profile updated successfully.
+                            Profile updated successfully, anything u can again do.
                         </div>
                     @endif
 

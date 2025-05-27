@@ -58,6 +58,21 @@
             <p>Media Manager</p>
           </a>
         </li>
+
+        <!-- User Management Section -->
+        <li class="nav-header mt-3 fw-bold text-uppercase small text-secondary">User Management</li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('roles.index') }}">
+            <i class="nav-icon bi bi-shield-lock"></i>
+            <p>Manage Roles</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('users.index') }}">
+            <i class="nav-icon bi bi-people"></i>
+            <p>Manage Users</p>
+          </a>
+        </li>
       </ul>
     </nav>
   </div>

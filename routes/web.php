@@ -5,7 +5,11 @@ use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\PostController;  
 use App\Http\Controllers\Dashboard\TagController; 
 use App\Http\Controllers\Dashboard\MediaController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\UserController as DashboardUserController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/dashboard/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::resource('/dashboard/users', UserController::class);
+
 Route::resource('/dashboard/categories', CategoryController::class);
 
 Route::get('/dashboard/posts/trashed', [PostController::class, 'trashed'])->name('posts.trashed');
@@ -34,4 +40,7 @@ Route::get('/dashboard/media', [MediaController::class, 'index'])->name('media.i
 Route::delete('/dashboard/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 Route::get('/dashboard/media/{media}/download', [MediaController::class, 'download'])->name('media.download');
 
+Route::resource('dashboard/roles', RoleController::class);
+
 require __DIR__.'/auth.php';
+ 
